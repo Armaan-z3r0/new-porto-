@@ -1,0 +1,6 @@
+{
+  "name": "Armaan Mulla — Security Analyst Blueprint",
+  "description": "Detection, endpoint defense and offensive reconnaissance. Technical portfolio and blueprint engineering specification for Armaan Mulla.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

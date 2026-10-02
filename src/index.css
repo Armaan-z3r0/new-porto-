@@ -1,0 +1,466 @@
+@import "tailwindcss";
+
+@theme {
+  --color-blueprint: #0A2A66;
+  --color-blueprint-dark: #082357;
+  --color-blueprint-light: #1145A3;
+  --color-blueprint-cyan: #38BDF8;
+  --color-blueprint-grey: #8A8F98;
+
+  --font-sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  --bp-blue: #0A2A66;
+  --bp-dark: #082357;
+  --bp-light: #1145A3;
+  --bp-cyan: #38BDF8;
+  --bp-grey: #8A8F98;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 1.5rem;
+  }
+}
+
+body {
+  background-color: #0A2A66;
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Authentic Engineering Blueprint Paper Grid */
+.blueprint-grid-bg {
+  background-color: #0A2A66;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+    linear-gradient(rgba(138, 143, 152, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(138, 143, 152, 0.12) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+}
+
+/* Drawing Sheet Engineering Frame */
+.drawing-sheet {
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  background-color: rgba(10, 42, 102, 0.92);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35), inset 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.drawing-sheet:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 6px 36px rgba(0, 0, 0, 0.45), inset 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+/* Drafting Corner Registration Marks */
+.crosshair-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.crosshair-corner::before,
+.crosshair-corner::after {
+  content: "";
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.crosshair-corner::before {
+  top: 5px;
+  left: 0;
+  width: 12px;
+  height: 1px;
+}
+
+.crosshair-corner::after {
+  top: 0;
+  left: 5px;
+  width: 1px;
+  height: 12px;
+}
+
+/* Technical Dimension Lines */
+.dim-line-h {
+  position: relative;
+  border-top: 1px dashed rgba(255, 255, 255, 0.4);
+}
+.dim-line-h::before,
+.dim-line-h::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 9px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.dim-line-h::before {
+  left: 0;
+}
+.dim-line-h::after {
+  right: 0;
+}
+
+/* Stamped Approval Seal for Standards */
+.stamp-badge {
+  border: 1.5px dashed rgba(255, 255, 255, 0.55);
+  background: rgba(8, 35, 87, 0.75);
+  transition: all 0.2s ease;
+}
+
+.stamp-badge:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(14, 62, 143, 0.85);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+/* Custom Blueprint Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #082357;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* CAD Crosshair Guidelines when CAD HUD is active */
+.cad-overlay-active::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Subtle Blueprint Schematic Scan Animation for Project Cards */
+@keyframes schematicScanSweep {
+  0% {
+    top: -12%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 108%;
+    opacity: 0;
+  }
+}
+
+.schematic-scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 56px;
+  top: -12%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(56, 189, 248, 0.03) 40%,
+    rgba(56, 189, 248, 0.16) 92%,
+    rgba(255, 255, 255, 0.8) 98%,
+    #38BDF8 100%
+  );
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.45);
+  animation: schematicScanSweep 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ============================================================
+   HIGH-CONTRAST BLACK & WHITE "HARD COPY" DRAFTING VIEW & PRINT
+   ============================================================ */
+
+/* ==========================================================================
+   HIGH-CONTRAST DRAFTING SPECIFICATION & PRINT MODE
+   ========================================================================== */
+
+/* 1. Hide interactive non-document UI chrome in Hard Copy */
+.hard-copy-active aside,
+.hard-copy-active header.lg\:hidden,
+.hard-copy-active .cad-overlay-active::after,
+.hard-copy-active [data-cad-overlay],
+.hard-copy-active .hex-ambient-container,
+.hard-copy-active .schematic-scan-beam,
+.hard-copy-active .blueprint-watermark-layer {
+  display: none !important;
+}
+
+/* 2. Full-width document layout (remove left sidebar padding offset) */
+.hard-copy-active .lg\:pl-56,
+.hard-copy-active .xl\:pl-60 {
+  padding-left: 0 !important;
+}
+
+/* 3. High-Contrast Monochrome Vellum Background & Typography */
+.hard-copy-active,
+.hard-copy-active body {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+.hard-copy-active .blueprint-grid-bg {
+  background-color: #FFFFFF !important;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+}
+
+/* 4. Engineering Drawing Sheets (Stark White Paper, Crisp Black Drafting Borders) */
+.hard-copy-active .drawing-sheet {
+  background-color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  margin-bottom: 2.5rem !important;
+}
+
+/* Corner Drafting Crosshairs in Hard Copy */
+.hard-copy-active .crosshair-corner::before,
+.hard-copy-active .crosshair-corner::after {
+  background-color: #000000 !important;
+}
+
+/* 5. Sub-Assembly Cards, Panels, & Borders */
+.hard-copy-active article,
+.hard-copy-active .border,
+.hard-copy-active .border-b,
+.hard-copy-active .border-t,
+.hard-copy-active .border-l,
+.hard-copy-active .border-r,
+.hard-copy-active .border-white\/30,
+.hard-copy-active .border-white\/25,
+.hard-copy-active .border-white\/20,
+.hard-copy-active .border-white\/15,
+.hard-copy-active .border-cyan-400\/40,
+.hard-copy-active .border-cyan-400\/30,
+.hard-copy-active .border-cyan-400\/25,
+.hard-copy-active .border-cyan-300\/80 {
+  border-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.hard-copy-active article {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #000000 !important;
+}
+
+/* 6. Typography High Contrast Overrides */
+.hard-copy-active h1,
+.hard-copy-active h2,
+.hard-copy-active h3,
+.hard-copy-active h4,
+.hard-copy-active h5,
+.hard-copy-active h6,
+.hard-copy-active p,
+.hard-copy-active span,
+.hard-copy-active div,
+.hard-copy-active a {
+  color: #000000 !important;
+  text-shadow: none !important;
+}
+
+.hard-copy-active .text-cyan-200\/70,
+.hard-copy-active .text-cyan-200\/60,
+.hard-copy-active .text-cyan-100\/90,
+.hard-copy-active .text-cyan-200,
+.hard-copy-active .text-cyan-300 {
+  color: #1A1A1A !important;
+}
+
+/* 7. Badges, Chips, Stamp Blocks */
+.hard-copy-active .stamp-badge,
+.hard-copy-active .bg-white\/10,
+.hard-copy-active .bg-cyan-950\/40,
+.hard-copy-active .bg-cyan-950\/30,
+.hard-copy-active .bg-cyan-500\/10,
+.hard-copy-active .bg-cyan-500\/15,
+.hard-copy-active .bg-cyan-500\/20,
+.hard-copy-active .bg-\[\#082357\]\/60,
+.hard-copy-active .bg-\[\#082357\]\/70,
+.hard-copy-active .bg-\[\#082357\],
+.hard-copy-active .bg-\[\#0A2A66\],
+.hard-copy-active .bg-\[\#071f4d\],
+.hard-copy-active .bg-\[\#061838\] {
+  background-color: #F4F4F5 !important;
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+/* 8. Technical Schematics & Diagrams in Hard Copy */
+.hard-copy-active .bg-\[\#061838\] {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #000000 !important;
+}
+
+.hard-copy-active svg line,
+.hard-copy-active svg path {
+  stroke: #000000 !important;
+}
+
+.hard-copy-active svg rect {
+  stroke: #000000 !important;
+  fill: #FFFFFF !important;
+}
+
+.hard-copy-active svg text {
+  fill: #000000 !important;
+  font-weight: bold !important;
+}
+
+.hard-copy-active svg circle {
+  stroke: #000000 !important;
+  fill: #000000 !important;
+}
+
+/* 9. Interactive Action Buttons transformed to Technical Print Stamps */
+.hard-copy-active button:not(.hard-copy-toolbar button) {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1.5px solid #000000 !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   NATIVE PRINT MEDIA QUERIES
+   ========================================================================== */
+@media print {
+  aside,
+  header.lg\:hidden,
+  .cad-overlay-active::after,
+  [data-cad-overlay],
+  .hex-ambient-container,
+  .schematic-scan-beam,
+  .blueprint-watermark-layer,
+  .hard-copy-toolbar,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .lg\:pl-56,
+  .xl\:pl-60 {
+    padding-left: 0 !important;
+  }
+
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .blueprint-grid-bg {
+    background-color: #FFFFFF !important;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
+    background-size: 24px 24px !important;
+  }
+
+  .drawing-sheet {
+    background-color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 2.5rem !important;
+  }
+
+  .crosshair-corner::before,
+  .crosshair-corner::after {
+    background-color: #000000 !important;
+  }
+
+  article,
+  .border,
+  .border-b,
+  .border-t,
+  .border-l,
+  .border-r {
+    border-color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  article {
+    background-color: #FFFFFF !important;
+    border: 1.5px solid #000000 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, span, div, a {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  svg line,
+  svg path {
+    stroke: #000000 !important;
+  }
+
+  svg rect {
+    stroke: #000000 !important;
+    fill: #FFFFFF !important;
+  }
+
+  svg text {
+    fill: #000000 !important;
+    font-weight: bold !important;
+  }
+
+  svg circle {
+    stroke: #000000 !important;
+    fill: #000000 !important;
+  }
+
+  button {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 1.5px solid #000000 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 10. Printable Page Standards */
+@page {
+  size: A4 portrait;
+  margin: 12mm 15mm;
+}
+
+/* Reduced Motion Fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
