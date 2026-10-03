@@ -5,7 +5,7 @@ import { SheetRevisionStamp } from './SheetRevisionStamp';
 
 export const CredentialsSection: React.FC = () => {
   const [activeStamp, setActiveStamp] = useState<string | null>(null);
-  const [mobileCredTab, setMobileCredTab] = useState<string>('ceh');
+  const [mobileCredTab, setMobileCredTab] = useState<string>('all');
 
   const credentials = [
     {
@@ -82,47 +82,8 @@ export const CredentialsSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile CAD Credential Selector (Eliminates vertical stacking on phones) */}
+      {/* Mobile CAD Credential Filter (Default: ALL) */}
       <div className="flex sm:hidden gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs select-none">
-        <button
-          onClick={() => {
-            playClick();
-            setMobileCredTab('ceh');
-          }}
-          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
-            mobileCredTab === 'ceh'
-              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
-              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
-          }`}
-        >
-          01. CEH (EC-COUNCIL)
-        </button>
-        <button
-          onClick={() => {
-            playClick();
-            setMobileCredTab('adis');
-          }}
-          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
-            mobileCredTab === 'adis'
-              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
-              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
-          }`}
-        >
-          02. ADIS (SECURITY)
-        </button>
-        <button
-          onClick={() => {
-            playClick();
-            setMobileCredTab('degree');
-          }}
-          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
-            mobileCredTab === 'degree'
-              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
-              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
-          }`}
-        >
-          03. B.SC. IT (DEGREE)
-        </button>
         <button
           onClick={() => {
             playClick();
@@ -136,14 +97,52 @@ export const CredentialsSection: React.FC = () => {
         >
           ALL (3)
         </button>
+        <button
+          onClick={() => {
+            playClick();
+            setMobileCredTab('ceh');
+          }}
+          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
+            mobileCredTab === 'ceh'
+              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
+              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
+          }`}
+        >
+          01. CEH
+        </button>
+        <button
+          onClick={() => {
+            playClick();
+            setMobileCredTab('adis');
+          }}
+          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
+            mobileCredTab === 'adis'
+              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
+              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
+          }`}
+        >
+          02. ADIS
+        </button>
+        <button
+          onClick={() => {
+            playClick();
+            setMobileCredTab('degree');
+          }}
+          className={`px-2.5 py-1 border text-[11px] whitespace-nowrap transition-all ${
+            mobileCredTab === 'degree'
+              ? 'border-cyan-300 bg-cyan-400/20 text-white font-bold'
+              : 'border-white/20 text-cyan-200/70 bg-[#082357]/60'
+          }`}
+        >
+          03. B.SC. IT
+        </button>
       </div>
 
-      {/* Stamped Approval Seals Grid */}
+      {/* Stamped Approval Seals Grid (All 3 credentials visible side-by-side on desktop) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 font-mono text-xs">
-        {credentials
-          .filter((cred) => mobileCredTab === 'all' || cred.id === mobileCredTab)
-          .map((cred) => {
-          const isSelected = activeStamp === cred.id || mobileCredTab === cred.id;
+        {credentials.map((cred) => {
+          const isMobileMatch = mobileCredTab === 'all' || mobileCredTab === cred.id;
+          const isSelected = activeStamp === cred.id;
 
           return (
             <div
@@ -153,8 +152,10 @@ export const CredentialsSection: React.FC = () => {
                 setActiveStamp(activeStamp === cred.id ? null : cred.id);
               }}
               onMouseEnter={playHoverTick}
-              className={`stamp-badge p-3.5 sm:p-5 flex flex-col justify-between cursor-pointer border-2 border-dashed ${
-                isSelected ? 'border-white bg-[#0e3e8f]' : 'border-white/60 hover:border-white'
+              className={`stamp-badge p-3.5 sm:p-5 flex flex-col justify-between cursor-pointer border-2 border-dashed transition-all ${
+                isMobileMatch ? 'flex' : 'hidden sm:flex'
+              } ${
+                isSelected ? 'border-white bg-[#0e3e8f] shadow-lg' : 'border-white/60 hover:border-white bg-[#082357]/70'
               }`}
             >
               {/* Seal Header */}
