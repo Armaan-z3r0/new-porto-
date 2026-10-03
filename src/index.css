@@ -223,6 +223,11 @@ body {
 .hard-copy-active body {
   background-color: #FFFFFF !important;
   color: #000000 !important;
+  isolation: auto !important;
+  transform: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  perspective: none !important;
 }
 
 .hard-copy-active .blueprint-grid-bg {
@@ -273,17 +278,27 @@ body {
   border: 1.5px solid #000000 !important;
 }
 
-/* 6. Typography High Contrast Overrides */
-.hard-copy-active h1,
-.hard-copy-active h2,
-.hard-copy-active h3,
-.hard-copy-active h4,
-.hard-copy-active h5,
-.hard-copy-active h6,
-.hard-copy-active p,
-.hard-copy-active span,
-.hard-copy-active div,
-.hard-copy-active a {
+/* 6. Typography High Contrast Overrides (Scoped so toolbar is never blacked out) */
+.hard-copy-active main h1,
+.hard-copy-active main h2,
+.hard-copy-active main h3,
+.hard-copy-active main h4,
+.hard-copy-active main h5,
+.hard-copy-active main h6,
+.hard-copy-active main p,
+.hard-copy-active main span,
+.hard-copy-active main div,
+.hard-copy-active main a,
+.hard-copy-active .drawing-sheet h1,
+.hard-copy-active .drawing-sheet h2,
+.hard-copy-active .drawing-sheet h3,
+.hard-copy-active .drawing-sheet h4,
+.hard-copy-active .drawing-sheet h5,
+.hard-copy-active .drawing-sheet h6,
+.hard-copy-active .drawing-sheet p,
+.hard-copy-active .drawing-sheet span,
+.hard-copy-active .drawing-sheet div,
+.hard-copy-active .drawing-sheet a {
   color: #000000 !important;
   text-shadow: none !important;
 }
@@ -321,32 +336,138 @@ body {
   border: 1.5px solid #000000 !important;
 }
 
-.hard-copy-active svg line,
-.hard-copy-active svg path {
+.hard-copy-active main svg line,
+.hard-copy-active main svg path,
+.hard-copy-active .drawing-sheet svg line,
+.hard-copy-active .drawing-sheet svg path {
   stroke: #000000 !important;
 }
 
-.hard-copy-active svg rect {
+.hard-copy-active main svg rect,
+.hard-copy-active .drawing-sheet svg rect {
   stroke: #000000 !important;
   fill: #FFFFFF !important;
 }
 
-.hard-copy-active svg text {
+.hard-copy-active main svg text,
+.hard-copy-active .drawing-sheet svg text {
   fill: #000000 !important;
   font-weight: bold !important;
 }
 
-.hard-copy-active svg circle {
+.hard-copy-active main svg circle,
+.hard-copy-active .drawing-sheet svg circle {
   stroke: #000000 !important;
   fill: #000000 !important;
 }
 
 /* 9. Interactive Action Buttons transformed to Technical Print Stamps */
-.hard-copy-active button:not(.hard-copy-toolbar button) {
+.hard-copy-active main button,
+.hard-copy-active .drawing-sheet button {
   background-color: #FFFFFF !important;
   color: #000000 !important;
   border: 1.5px solid #000000 !important;
   box-shadow: none !important;
+}
+
+/* ==========================================================================
+   HARD COPY TOOLBAR & ESCAPE CONTROLS (HIGH CONTRAST & NEVER BLACKED OUT)
+   ========================================================================== */
+.hard-copy-toolbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-bottom: 2px solid #333333 !important;
+  z-index: 2147483647 !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.85) !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+.hard-copy-toolbar span,
+.hard-copy-toolbar div {
+  color: #FFFFFF !important;
+}
+
+.hard-copy-toolbar button.exit-btn {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #FFFFFF !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35) !important;
+}
+
+.hard-copy-toolbar button.exit-btn span {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.hard-copy-toolbar button.exit-btn svg,
+.hard-copy-toolbar button.exit-btn svg line,
+.hard-copy-toolbar button.exit-btn svg path {
+  stroke: #000000 !important;
+}
+
+.hard-copy-toolbar button.exit-btn:hover {
+  background-color: #E5E5E5 !important;
+  border-color: #FFFFFF !important;
+}
+
+.hard-copy-toolbar button.print-btn {
+  background-color: #171717 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #525252 !important;
+}
+
+.hard-copy-toolbar button.print-btn span {
+  color: #FFFFFF !important;
+}
+
+.hard-copy-toolbar button.print-btn svg,
+.hard-copy-toolbar button.print-btn svg line,
+.hard-copy-toolbar button.print-btn svg path {
+  stroke: #FFFFFF !important;
+}
+
+.hard-copy-fab {
+  position: fixed !important;
+  bottom: 1.25rem !important;
+  right: 1.25rem !important;
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.85) !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}
+
+.hard-copy-fab span {
+  color: #FFFFFF !important;
+}
+
+.hard-copy-fab svg,
+.hard-copy-fab svg line,
+.hard-copy-fab svg path {
+  stroke: #FFFFFF !important;
+}
+
+.hard-copy-fab:hover {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+.hard-copy-fab:hover span {
+  color: #000000 !important;
+}
+
+.hard-copy-fab:hover svg,
+.hard-copy-fab:hover svg line,
+.hard-copy-fab:hover svg path {
+  stroke: #000000 !important;
 }
 
 /* ==========================================================================

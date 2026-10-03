@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Printer, X } from 'lucide-react';
 import { Navigation } from './components/Navigation';
 import { HeroSection } from './components/HeroSection';
@@ -75,40 +76,74 @@ export default function App() {
     <div
       className={`blueprint-grid-bg min-h-screen text-white relative selection:bg-white selection:text-[#0A2A66] ${
         cadOverlay && !hardCopyMode ? 'cad-overlay-active' : ''
-      } ${hardCopyMode ? 'hard-copy-active pt-12 sm:pt-10' : ''}`}
+      } ${hardCopyMode ? 'hard-copy-active pt-14 sm:pt-12' : ''}`}
     >
-      {/* High-Contrast Hard Copy Floating Toolbar */}
-      {hardCopyMode && (
-        <div className="hard-copy-toolbar print:hidden fixed top-0 left-0 right-0 z-50 bg-[#000000] text-white px-3 sm:px-4 py-2 sm:py-2.5 flex justify-between items-center font-mono text-xs border-b-2 border-black shadow-2xl animate-fadeIn">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <span className="w-2.5 h-2.5 bg-white inline-block shrink-0" />
-            <div className="flex items-baseline gap-2 truncate">
-              <span className="font-bold tracking-wider text-[10px] sm:text-xs truncate">
-                [HARD COPY SPEC // B&W DRAFT]
-              </span>
-              <span className="text-[10px] text-gray-400 hidden md:inline">
-                • ALL UI CONTROLS SUPPRESSED • BLACK INK ON WHITE VELLUM
-              </span>
+      {/* High-Contrast Hard Copy Floating Toolbar & Escape Controls (Rendered into document.body to bypass parent stacking contexts) */}
+      {hardCopyMode && typeof document !== 'undefined' && createPortal(
+        <>
+          <div
+            role="banner"
+            aria-label="Hard Copy Drafting Mode Toolbar"
+            className="hard-copy-toolbar print:hidden fixed top-0 left-0 right-0 w-full z-[2147483647] bg-black text-white px-3 sm:px-6 py-2.5 sm:py-3 flex justify-between items-center font-mono text-xs border-b-2 border-neutral-700 shadow-2xl animate-fadeIn"
+            style={{ zIndex: 2147483647 }}
+          >
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <span className="w-2.5 h-2.5 bg-white inline-block shrink-0 animate-pulse" />
+              <div className="flex items-baseline gap-2 truncate">
+                <span className="font-bold tracking-wider text-[11px] sm:text-xs truncate text-white">
+                  [HARD COPY SPEC // B&W DRAFT]
+                </span>
+                <span className="text-[10px] text-gray-400 hidden md:inline">
+                  • BLACK INK ON WHITE VELLUM
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <button
+                onClick={() => {
+                  playClick();
+                  window.print();
+                }}
+                className="print-btn hidden sm:flex border border-neutral-600 bg-neutral-900 hover:bg-neutral-800 text-white px-3 py-1.5 text-xs font-mono items-center gap-1.5 cursor-pointer transition-colors"
+                title="Print Specification (⌘P / Ctrl+P)"
+              >
+                <Printer className="w-3.5 h-3.5 text-white" />
+                <span>PRINT [⌘P]</span>
+              </button>
+              <button
+                onClick={() => {
+                  playClick();
+                  setHardCopyMode(false);
+                }}
+                className="exit-btn bg-white hover:bg-neutral-200 text-black px-3.5 sm:px-4 py-1.5 font-mono font-bold flex items-center gap-1.5 text-xs sm:text-sm cursor-pointer transition-all border-2 border-white rounded-xs shadow-lg"
+                title="Exit Hard Copy View (ESC)"
+              >
+                <X className="w-4 h-4 text-black shrink-0" strokeWidth={3} />
+                <span className="font-extrabold text-black tracking-wider">EXIT (ESC)</span>
+              </button>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <div className="hidden sm:flex border border-white/30 bg-white/10 px-2 py-1 text-[10px] sm:text-[11px] font-mono text-gray-200 items-center gap-1.5">
-              <Printer className="w-3.5 h-3.5 text-white" />
-              <span>PRINT [CTRL+P / ⌘P]</span>
-            </div>
+
+          {/* Persistent Floating Escape Pill (Accessible anywhere while scrolling or on mobile) */}
+          <div
+            className="fixed bottom-5 right-5 z-[2147483647] print:hidden"
+            style={{ zIndex: 2147483647 }}
+          >
             <button
               onClick={() => {
                 playClick();
                 setHardCopyMode(false);
               }}
-              className="border border-white/60 hover:bg-white/20 text-white px-2.5 sm:px-3 py-1 font-bold flex items-center gap-1 text-[11px] sm:text-xs cursor-pointer transition-colors"
+              className="hard-copy-fab bg-black text-white hover:bg-white hover:text-black border-2 border-white px-4 py-2.5 font-mono font-bold text-xs sm:text-sm flex items-center gap-2 shadow-[0_4px_24px_rgba(0,0,0,0.85)] cursor-pointer transition-all rounded-xs"
+              style={{ zIndex: 2147483647 }}
               title="Exit Hard Copy View (ESC)"
             >
-              <X className="w-3.5 h-3.5" />
-              <span>EXIT (ESC)</span>
+              <X className="w-4 h-4 shrink-0" strokeWidth={3} />
+              <span className="tracking-wider font-extrabold">EXIT B&W (ESC)</span>
             </button>
           </div>
-        </div>
+        </>,
+        document.body
       )}
 
       {/* Repeating Faint REDACTED / BLUEPRINT DRAFT Watermark (Suppressed in Hard Copy) */}
